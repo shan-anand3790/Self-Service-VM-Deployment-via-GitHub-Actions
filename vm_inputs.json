@@ -1,6 +1,6 @@
 {
   "os_disk_config": {
-    "name": "myosdisk_02",
+    "name": "myosdisk_03",
     "caching": "ReadWrite",
     "create_option": "FromImage",
     "managed_disk_type": "Standard_LRS"
@@ -11,4 +11,5 @@
     "sku": "18.04-LTS",
     "version": "latest"
   }
+
 }
