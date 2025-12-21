@@ -48,7 +48,6 @@ on:
   push:
     paths:
       - 'vm_inputs.json'
-  pull_request:
 
 permissions:
   contents: read
