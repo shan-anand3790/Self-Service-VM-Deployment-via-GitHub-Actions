@@ -10,43 +10,85 @@ terraform {
 provider "azurerm" {
   features {}
 }
+variable "prefix" {
+  default = "tfvmex"
+}
 variable "environment" {
   description = "type of environment"
   type        = string
   default     = "staging"
+}# These act as placeholders for the data coming from your file
+variable "os_disk_config" {
+  description = "Configuration for the OS Disk"
+  type        = map(string)
 }
-locals {
-  common_tags = {
-    environment = "prod"
-    lab = "finance"
-  }
+
+variable "image_reference" {
+  description = "Configuration for the Source Image"
+  type        = map(string)
 }
+# ---------------------
+# Create a resource group
 resource "azurerm_resource_group" "rg" {
-  name     = "var.resource_group_name"
+  name     = "${var.prefix}-rg"
   location = "southindia"
   # optional: add tags if you want to manage them in Terraform
   # tags = { env = "Myterraform Getting started" }
 }
 # Create a virtual network
 resource "azurerm_virtual_network" "vnet" {
-  name                = "myTFVnet"
+  name                = "${var.prefix}-vnet"
   address_space       = ["10.0.0.0/16"]
-  location            = "southindia"
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-}
-resource "azurerm_storage_account" "example" {
-  name                     = "demotfshanstorage"
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
-  account_tier             = "Standard"
-  account_replication_type = "GRS"
-
   tags = {
-    environment = local.common_tags.environment
-    lab         = local.common_tags.lab
+    environment = var.environment
+    name        = "${var.prefix}-vm"
   }
-<<<<<<< HEAD
 }
-=======
+resource "azurerm_subnet" "internal" {
+  name                 = "internal"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.0.2.0/24"]
 }
->>>>>>> 17f9c5553e8202ad03b9e0b22fe332d806effaec
+resource "azurerm_network_interface" "main" {
+  name                = "${var.prefix}-nic"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.internal.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+resource "azurerm_virtual_machine" "main" {
+  name                  = "${var.prefix}-vm"
+  location              = azurerm_resource_group.rg.location
+  resource_group_name   = azurerm_resource_group.rg.name
+  network_interface_ids = [azurerm_network_interface.main.id]
+  vm_size               = "Standard_DS1_v2"
+
+  storage_os_disk {
+    name              = var.os_disk_config["name"]
+    caching           = var.os_disk_config["caching"]
+    create_option     = var.os_disk_config["create_option"]
+    managed_disk_type = var.os_disk_config["managed_disk_type"]
+  }
+  storage_image_reference {
+    publisher = var.image_reference["publisher"]
+    offer     = var.image_reference["offer"]
+    sku       = var.image_reference["sku"]
+    version   = var.image_reference["version"]
+  }
+   os_profile {
+    computer_name  = "hostname"
+    admin_username = "testadmin"
+    admin_password = "Password1234"
+  }
+  tags = {
+    environment = var.environment
+    name        = "${var.prefix}-vm"
+ }
+} 
