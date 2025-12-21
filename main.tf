@@ -45,4 +45,8 @@ resource "azurerm_storage_account" "example" {
     environment = local.common_tags.environment
     lab         = local.common_tags.lab
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 17f9c5553e8202ad03b9e0b22fe332d806effaec
