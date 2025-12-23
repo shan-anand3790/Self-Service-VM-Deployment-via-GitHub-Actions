@@ -68,7 +68,7 @@ resource "azurerm_virtual_machine" "main" {
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.main.id]
-  vm_size               = "Standard_DS1_v2"
+  vm_size               = "Standard_B2ats_v2"
 
   storage_os_disk {
     name              = var.os_disk_config["name"]
@@ -110,6 +110,7 @@ output "os_disk_name" {
 output "resource_group" {
   value = azurerm_resource_group.rg.name
 }
+
 
 
 
