@@ -1,6 +1,6 @@
 {
   "os_disk_config": {
-    "name": "myosdisk_06",
+    "name": "myosdisk_07",
     "caching": "ReadWrite",
     "create_option": "FromImage",
     "managed_disk_type": "Standard_LRS"
@@ -13,6 +13,7 @@
   }
 
 }
+
 
 
 
