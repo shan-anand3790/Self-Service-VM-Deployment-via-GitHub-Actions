@@ -91,3 +91,15 @@ jobs:
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
+      # --- NEW STEP 1: Generate the JSON file ---
+    - name: Extract Outputs to JSON
+      run: |
+        terraform output -json > vm_output_details.json
+        cat vm_output_details.json  # Optional: Print it to the console log for quick viewing
+
+    # --- NEW STEP 2: Save the file so you can download it ---
+    - name: Upload Output Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: deployment-details
+        path: vm_output_details.json
