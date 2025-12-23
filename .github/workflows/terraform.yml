@@ -1,3 +1,4 @@
+
 # This workflow installs the latest version of Terraform CLI and configures the Terraform CLI configuration file
 # with an API token for Terraform Cloud (app.terraform.io). On pull request events, this workflow will run
 # `terraform init`, `terraform fmt`, and `terraform plan` (speculative plan via Terraform Cloud). On push events
@@ -94,6 +95,7 @@ jobs:
       # --- NEW STEP 1: Generate the JSON file ---
     - name: Extract Outputs to JSON
       run: |
+        terraform refresh
         terraform output -json > vm_output_details.json
         cat vm_output_details.json  # Optional: Print it to the console log for quick viewing
     # --- NEW STEP 2: Save the file so you can download it ---
