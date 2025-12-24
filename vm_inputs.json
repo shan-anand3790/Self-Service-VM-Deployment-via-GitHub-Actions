@@ -7,9 +7,9 @@
   "vm_size": {
     "sensitive": false,
     "type": "string",
-    "value": "Standard_B1s"
+    "value": "10000 times"
   },
-  "public_ip": {
+  "Avengers Assemble": {
     "sensitive": false,
     "type": "string",
     "value": "Yes"
