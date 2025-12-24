@@ -32,7 +32,7 @@ variable "image_reference" {
 # ---------------------
 # Create a resource group
 resource "azurerm_resource_group" "rg" {
-  name     = "${var.prefix}-rg"
+  name     = "${var.prefix}-rg1"
   location = "southindia"
   # optional: add tags if you want to manage them in Terraform
   # tags = { env = "Myterraform Getting started" }
@@ -111,8 +111,9 @@ output "os_disk_name" {
 */
 # Output the Resource Group Name
 output "resource_group" {
-  value = azurerm_resource_group.rg.name
+  value = azurerm_resource_group.rg1.name
 }
+
 
 
 
