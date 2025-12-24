@@ -1,28 +1,7 @@
 {
-  "os_disk_config": {
-    "name": "myosdisk_109",
-    "caching": "ReadWrite",
-    "create_option": "FromImage",
-    "managed_disk_type": "Standard_LRS"
-  },
-  "image_reference": {
-    "publisher": "Canonical",
-    "offer": "UbuntuServer",
-    "sku": "18.04-LTS",
-    "version": "latest"
+  "location": {
+    "sensitive": false,
+    "type": "string",
+    "value": "Southeast Asia"
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
