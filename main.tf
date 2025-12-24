@@ -111,8 +111,9 @@ output "os_disk_name" {
 */
 # Output the Resource Group Name
 output "resource_group" {
-  value = azurerm_resource_group.rg1.name
+  value = azurerm_resource_group.rg.name
 }
+
 
 
 
