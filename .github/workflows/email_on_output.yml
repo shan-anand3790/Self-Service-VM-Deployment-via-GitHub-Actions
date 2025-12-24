@@ -1,0 +1,42 @@
+name: Email on VM Output
+
+on:
+  push:
+    paths:
+      - 'vm_output_details.json'  # <--- The Critical Line: Only runs when this file changes
+
+jobs:
+  notify-user:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Optional: Read the file so we can include the details in the email
+      - name: Read Output JSON
+        id: read_json
+        run: |
+          # Read the file content into a variable
+          CONTENT=$(cat vm_output_details.json)
+          # Escape newlines for the email body
+          echo "json_content<<EOF" >> $GITHUB_ENV
+          echo "$CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Send Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "✅ VM Creation Successful: Details Inside"
+          to: admin@example.com
+          from: "GitHub Actions"
+          body: |
+            The VM provisioning is complete. Here are the details:
+            
+            ${{ env.json_content }}
+            
+            You can view the file here: https://github.com/${{ github.repository }}/blob/main/vm_output_details.json
