@@ -103,16 +103,20 @@ jobs:
         git config --global user.name "shan.anand3790"
         git config --global user.email "srsanand7@gmail.com"
         git add vm_output_details.json
+        # 4. Commit (if changed)
         if git diff --staged --quiet; then
           echo "No changes in output. Skipping push."
         else
-          # 5. Commit and Push
-          # [skip ci] is CRITICAL. It prevents this push from triggering the pipeline again (Infinite Loop)
           git commit -m "Update Terraform Outputs [skip ci]"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git pull --rebase origin master
-          git push origin master
           
+          # 5. Pull latest changes from GitHub (Handling dirty files)
+          # --rebase: Put my changes on top of GitHub's
+          # --autostash: Hide the dirty files (lock files etc) automatically so pull works
+          git pull --rebase --autostash origin main
+          
+          # 6. Push using the Token
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git push origin main
         fi
     # --- NEW STEP 2: Save the file so you can download it ---
     - name: Upload Output Artifact
