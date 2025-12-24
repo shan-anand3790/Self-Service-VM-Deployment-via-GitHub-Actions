@@ -8,5 +8,10 @@
     "sensitive": false,
     "type": "string",
     "value": "Standard_D2s_v3"
+  },
+  "public_ip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "No"
   }
 }
