@@ -32,7 +32,7 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: "✅ VM Creation Successful: Details Inside"
-          to: mathumitha211@gmail.com
+          to: srsanand7@gmail.com
           from: "GitHub Actions"
           body: |
             The VM provisioning is complete. Here are the details:
