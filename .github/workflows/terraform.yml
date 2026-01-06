@@ -49,6 +49,8 @@ on:
   push:
     paths:
       - 'vm_inputs.json'
+    branches:
+      - master
 
 permissions:
   contents: write
