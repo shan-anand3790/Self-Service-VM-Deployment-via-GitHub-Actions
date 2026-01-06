@@ -50,7 +50,7 @@ on:
     paths:
       - 'vm_inputs.json'
     branches:
-      - master
+      - main
 
 permissions:
   contents: write
